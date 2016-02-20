@@ -48,7 +48,7 @@ public class Robot extends IterativeRobot {
         Motor armRight = Hardware.Motors.victor(RARM_PORT);
         Motor arm = Motor.compose(armLeft, armRight);
         
-        //cam = new USBCamera();
+        cam = new USBCamera();
         
 
         drive = new TankDrive(left, right);
@@ -76,9 +76,9 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void autonomousInit() {
-        // Start Strongback functions ...
-        //Strongback.start();
-        //Strongback.submit(new TimedDriveCommand(drive, 0.5, 0.5, false, 5.0));
+        //Start Strongback functions ...
+        Strongback.start();
+        Strongback.submit(new TimedDriveCommand(drive, 0.5, 0.5, false, 5.0));
     }
     
     @Override
@@ -87,7 +87,7 @@ public class Robot extends IterativeRobot {
         Strongback.disable();
         // Start Strongback functions if not already running...
         Strongback.start();
-        //cam.startCapture();
+        cam.startCapture();
     }
 
     @Override

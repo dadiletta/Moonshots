@@ -1,5 +1,3 @@
-package com.myteam.robot;
-
 /*
  * Strongback
  * Copyright 2015, Strongback and individual contributors by the @authors tag.
@@ -15,6 +13,9 @@ package com.myteam.robot;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package com.myteam.robot;
+
 
 import org.strongback.command.Command;
 import org.strongback.drive.TankDrive;

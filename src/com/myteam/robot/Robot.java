@@ -1,5 +1,5 @@
 /* Created Thu Jan 28 17:15:33 EST 2016 */
-//recordnodata record no events
+
 package com.myteam.robot;
 
 import org.strongback.Strongback;
@@ -11,6 +11,7 @@ import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
 import org.strongback.util.Values;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.vision.USBCamera;
 
@@ -29,8 +30,9 @@ public class Robot extends IterativeRobot {
     //Used to limit the number of console outputs
     public int filter = 0;
     
-    public USBCamera cam;
     
+    
+    //We moved this up here so we can 
     protected ContinuousRange sensitivity;
     
     //trying to move this joystick init outisde of robotInit so telopPeriodic can access stick control
@@ -38,20 +40,24 @@ public class Robot extends IterativeRobot {
     
     @Override
     public void robotInit() {
-    	System.out.println("Robot init underway");
     	Strongback.configure().recordNoEvents().recordNoData().initialize();
     	
         Motor left = Hardware.Motors.victor(LMOTOR_PORT).invert();
         Motor right = Hardware.Motors.victor(RMOTOR_PORT);
+        drive = new TankDrive(left, right); 
         
         Motor armLeft = Hardware.Motors.victor(LARM_PORT);
         Motor armRight = Hardware.Motors.victor(RARM_PORT);
         Motor arm = Motor.compose(armLeft, armRight);
         
-        cam = new USBCamera();
         
+        //CAMERA NIGHTMARE
+        //USBCamera cam0 = new USBCamera();
+        //cam0.startCapture();
+        //CameraServer camera = CameraServer.getInstance();
+        //camera.setQuality(50);
+        //camera.startAutomaticCapture("cam0");
 
-        drive = new TankDrive(left, right);
         
         // Set up the human input controls for teleoperated mode. We want to use the Logitech Attack 3D's throttle as a
         // "sensitivity" input to scale the drive speed and throttle, so we'll map it from it's native [-1,1] to a simple scale
@@ -78,7 +84,10 @@ public class Robot extends IterativeRobot {
     public void autonomousInit() {
         //Start Strongback functions ...
         Strongback.start();
-        Strongback.submit(new TimedDriveCommand(drive, 0.5, 0.5, false, 5.0));
+        
+        //this timedDrive class is in the package but it gets lost. Move the package
+        //information around on the class and it will load right away
+        //Strongback.submit(new TimedDriveCommand(drive, 0.5, 0.0, false, 5.0));
     }
     
     @Override
@@ -87,7 +96,7 @@ public class Robot extends IterativeRobot {
         Strongback.disable();
         // Start Strongback functions if not already running...
         Strongback.start();
-        cam.startCapture();
+        
     }
 
     @Override

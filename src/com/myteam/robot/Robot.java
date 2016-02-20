@@ -6,7 +6,6 @@ import org.strongback.Strongback;
 import org.strongback.components.Motor;
 import org.strongback.components.ui.ContinuousRange;
 import org.strongback.components.ui.FlightStick;
-import org.strongback.drive.MecanumDrive;
 import org.strongback.drive.TankDrive;
 import org.strongback.hardware.Hardware;
 
@@ -15,11 +14,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
 public class Robot extends IterativeRobot {
-
+	
     private static final int JOYSTICK_PORT = 1; // in driver station
-    private static final int LMOTOR_PORT = 1;
-    private static final int RMOTOR_PORT = 0;
-
+    private static final int LMOTOR_PORT = 2;
+    private static final int RMOTOR_PORT = 1;
+//port 3 = right arm
+//port 4 = left arm
     private TankDrive drive;
     private ContinuousRange driveSpeed;
     private ContinuousRange turnSpeed;
@@ -29,10 +29,12 @@ public class Robot extends IterativeRobot {
     
     @Override
     public void robotInit() {
+    	System.out.println("Robot init underway");
     	Strongback.configure().recordNoEvents().recordNoData().initialize();
     	
-        Motor left = Hardware.Motors.talon(LMOTOR_PORT).invert();
-        Motor right = Hardware.Motors.talon(RMOTOR_PORT).invert();
+        Motor left = Hardware.Motors.victor(LMOTOR_PORT).invert();
+        Motor right = Hardware.Motors.victor(RMOTOR_PORT).invert();
+        
         
         FlightStick joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(JOYSTICK_PORT);
         
@@ -44,6 +46,7 @@ public class Robot extends IterativeRobot {
         // factor of [0,1] ...
 
         ContinuousRange sensitivity = joystick.getThrottle().map(t -> (t + 1.0) / 2.0);
+        System.out.println("Sensitivity: "+ sensitivity);
         driveSpeed = joystick.getPitch().scale(sensitivity::read); // scaled
         turnSpeed = joystick.getRoll().scale(sensitivity::read).invert(); // scaled and inverted
        
@@ -66,6 +69,7 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
+    	System.out.println("Teleop drive underway");
         drive.arcade(driveSpeed.read(), turnSpeed.read());   
         
     }

@@ -42,12 +42,13 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	Strongback.configure().recordNoEvents().recordNoData().initialize();
     	
-        Motor left = Hardware.Motors.victor(LMOTOR_PORT).invert();
-        Motor right = Hardware.Motors.victor(RMOTOR_PORT);
+        //Motor left = Hardware.Motors.victor(LMOTOR_PORT).invert();
+        Motor left = Hardware.Motors.victorSP(LMOTOR_PORT).invert();
+        Motor right = Hardware.Motors.victorSP(RMOTOR_PORT);
         drive = new TankDrive(left, right); 
         
-        Motor armLeft = Hardware.Motors.victor(LARM_PORT);
-        Motor armRight = Hardware.Motors.victor(RARM_PORT);
+        Motor armLeft = Hardware.Motors.victorSP(LARM_PORT);
+        Motor armRight = Hardware.Motors.victorSP(RARM_PORT);
         Motor arm = Motor.compose(armLeft, armRight);
         
         
@@ -55,7 +56,7 @@ public class Robot extends IterativeRobot {
         //USBCamera cam0 = new USBCamera();
         //cam0.startCapture();
         CameraServer camera = CameraServer.getInstance();
-        camera.setQuality(50);
+        camera.setQuality(25);
         camera.startAutomaticCapture("cam1");
 
         
@@ -64,7 +65,7 @@ public class Robot extends IterativeRobot {
         // factor of [0,1] ...
         FlightStick joystick = Hardware.HumanInterfaceDevices.logitechAttack3D(JOYSTICK_PORT);
         SwitchReactor reactor = Strongback.switchReactor();
-       // ContinuousRange sensitivity = joystick.getThrottle().map(t -> ((t + 1.0) / 2.0));
+        // ContinuousRange sensitivity = joystick.getThrottle().map(t -> ((t + 1.0) / 2.0));
         sensitivity = joystick.getThrottle().map(Values.mapRange(-1.0,1.0).toRange(0.0, 1.0));
         driveSpeed = joystick.getPitch().scale(sensitivity::read); // scaled
         turnSpeed = joystick.getRoll().scale(sensitivity::read); // scaled and inverted

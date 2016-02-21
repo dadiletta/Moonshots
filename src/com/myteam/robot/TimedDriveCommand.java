@@ -16,7 +16,6 @@
 
 package com.myteam.robot;
 
-
 import org.strongback.command.Command;
 import org.strongback.drive.TankDrive;
 

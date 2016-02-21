@@ -13,7 +13,7 @@ import org.strongback.util.Values;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.vision.USBCamera;
+//import edu.wpi.first.wpilibj.vision.USBCamera;
 
 
 public class Robot extends IterativeRobot {
@@ -54,9 +54,9 @@ public class Robot extends IterativeRobot {
         //CAMERA NIGHTMARE
         //USBCamera cam0 = new USBCamera();
         //cam0.startCapture();
-        //CameraServer camera = CameraServer.getInstance();
-        //camera.setQuality(50);
-        //camera.startAutomaticCapture("cam0");
+        CameraServer camera = CameraServer.getInstance();
+        camera.setQuality(50);
+        camera.startAutomaticCapture("cam1");
 
         
         // Set up the human input controls for teleoperated mode. We want to use the Logitech Attack 3D's throttle as a
@@ -87,7 +87,7 @@ public class Robot extends IterativeRobot {
         
         //this timedDrive class is in the package but it gets lost. Move the package
         //information around on the class and it will load right away
-        //Strongback.submit(new TimedDriveCommand(drive, 0.5, 0.0, false, 5.0));
+        Strongback.submit(new TimedDriveCommand(drive, -0.5, 0.0, false, 5.0));
     }
     
     @Override
@@ -104,7 +104,7 @@ public class Robot extends IterativeRobot {
         drive.arcade(driveSpeed.read(), turnSpeed.read()); 
         
         //Checking on the drive speed value every 10 cycles
-        if(filter % 10 == 0)
+        if(filter % 20 == 0)
         	System.out.println("Sensitivity: " + sensitivity.read());
         filter++;
     }

@@ -37,11 +37,13 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 
 public class Robot extends IterativeRobot {
 	
+	//motor declarations
     private static final int JOYSTICK_PORT = 0; // in driver station
     private static final int LMOTOR_PORT = 5;
     private static final int RMOTOR_PORT = 2; 
     private static final int RARM_PORT = 3; 
     private static final int LARM_PORT = 4;
+    //limits are coefficients to the joystick sensitivity variable
     private static final double ARM_UP_LIMIT = 0.3;
     private static final double ARM_DOWN_LIMIT = 0.7;
     private TankDrive drive;
@@ -66,20 +68,18 @@ public class Robot extends IterativeRobot {
     	Strongback.configure().recordNoData().recordNoCommands().recordNoEvents()
     		.useExecutionPeriod(300, TimeUnit.MILLISECONDS).initialize();
         
+    	//create motors and link them to a drive
     	Motor left = Hardware.Motors.victorSP(LMOTOR_PORT).invert();
-    	DoubleToDoubleFunction SPEED_LIMITER = Values.limiter(-0.1, 0.1);
-    	Motor right = Hardware.Motors.victorSP(RMOTOR_PORT, SPEED_LIMITER);
+    	//DoubleToDoubleFunction SPEED_LIMITER = Values.limiter(-0.1, 0.1);
+    	Motor right = Hardware.Motors.victorSP(RMOTOR_PORT);
         drive = new TankDrive(left, right); 
         
+        //create the arm motors and combine them together
         Motor armLeft = Hardware.Motors.victorSP(LARM_PORT);
         Motor armRight = Hardware.Motors.victorSP(RARM_PORT);
         //Arms combined so they always move in sync
         Motor arm = Motor.compose(armLeft, armRight);
         
-        
-        //FIRST CAMERA ATTEMPT:
-        //USBCamera cam0 = new USBCamera();
-        //cam0.startCapture();
         
         //Camera must be in the outside USB port. Check Rio dashboard for the name of the camera
         CameraServer camera = CameraServer.getInstance();

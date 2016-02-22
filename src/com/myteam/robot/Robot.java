@@ -20,7 +20,7 @@ public class Robot extends IterativeRobot {
 	
     private static final int JOYSTICK_PORT = 0; // in driver station
     private static final int LMOTOR_PORT = 2;
-    private static final int RMOTOR_PORT = 1;
+    private static final int RMOTOR_PORT = 5; //was switched from port 1 to troubleshoot
     private static final int RARM_PORT = 3; 
     private static final int LARM_PORT = 4;
     private TankDrive drive;
@@ -41,10 +41,9 @@ public class Robot extends IterativeRobot {
     @Override
     public void robotInit() {
     	Strongback.configure().recordNoEvents().recordNoData().initialize();
-    	
-        //Motor left = Hardware.Motors.victor(LMOTOR_PORT).invert();
-        Motor left = Hardware.Motors.victorSP(LMOTOR_PORT).invert();
-        Motor right = Hardware.Motors.victorSP(RMOTOR_PORT);
+ 
+        Motor left = Hardware.Motors.victorSP(LMOTOR_PORT);
+        Motor right = Hardware.Motors.victorSP(RMOTOR_PORT).invert();
         drive = new TankDrive(left, right); 
         
         Motor armLeft = Hardware.Motors.victorSP(LARM_PORT);
@@ -68,7 +67,7 @@ public class Robot extends IterativeRobot {
         // ContinuousRange sensitivity = joystick.getThrottle().map(t -> ((t + 1.0) / 2.0));
         sensitivity = joystick.getThrottle().map(Values.mapRange(-1.0,1.0).toRange(0.0, 1.0));
         driveSpeed = joystick.getPitch().scale(sensitivity::read); // scaled
-        turnSpeed = joystick.getRoll().scale(sensitivity::read); // scaled and inverted
+        turnSpeed = joystick.getRoll().scale(sensitivity::read).invert(); // scaled and inverted
         
         
         reactor.onTriggered(joystick.getTrigger(), () -> arm.setSpeed(-sensitivity.read()));

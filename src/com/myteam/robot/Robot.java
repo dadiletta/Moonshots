@@ -26,13 +26,10 @@ import org.strongback.components.Motor;
 import org.strongback.components.ui.ContinuousRange;
 import org.strongback.components.ui.FlightStick;
 import org.strongback.drive.TankDrive;
-import org.strongback.function.DoubleToDoubleFunction;
 import org.strongback.hardware.Hardware;
 import org.strongback.util.Values;
-
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
-//import edu.wpi.first.wpilibj.vision.USBCamera;
 
 
 public class Robot extends IterativeRobot {
@@ -44,21 +41,21 @@ public class Robot extends IterativeRobot {
     private static final int RARM_PORT = 3; 
     private static final int LARM_PORT = 4;
     //limits are coefficients to the joystick sensitivity variable
-    private static final double ARM_UP_LIMIT = 0.3;
-    private static final double ARM_DOWN_LIMIT = 0.7;
+    private static final double ARM_UP_LIMIT = 0.85;
+    private static final double ARM_DOWN_LIMIT = 1;
     private TankDrive drive;
     private ContinuousRange driveSpeed;
     private ContinuousRange turnSpeed;
-    
+
+    //We moved this up here so we can output this variable in the teleop
+    protected ContinuousRange sensitivity;
     //Used to limit and format the number of console outputs
     private int filter = 0;
 	private String pattern = "###.###";
 	private DecimalFormat myFormat = new DecimalFormat(pattern);
 	private double sen;
     
-    
-    //We moved this up here so we can output this variable in the teleop
-    protected ContinuousRange sensitivity;
+
     
     
     @Override
@@ -66,7 +63,7 @@ public class Robot extends IterativeRobot {
     	//Execution period extended so it doesn't time out per cycle
     	//Records no data and no events, a feature of Strongback we will look at next year
     	Strongback.configure().recordNoData().recordNoCommands().recordNoEvents()
-    		.useExecutionPeriod(300, TimeUnit.MILLISECONDS).initialize();
+    		.useExecutionPeriod(200, TimeUnit.MILLISECONDS).initialize();
         
     	//create motors and link them to a drive
     	Motor left = Hardware.Motors.victorSP(LMOTOR_PORT).invert();

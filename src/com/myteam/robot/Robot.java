@@ -41,8 +41,9 @@ public class Robot extends IterativeRobot {
     private static final int RARM_PORT = 3; 
     private static final int LARM_PORT = 4;
     //limits are coefficients to the joystick sensitivity variable
-    private static final double ARM_UP_LIMIT = 0.85;
+    private static final double ARM_UP_LIMIT = 1;
     private static final double ARM_DOWN_LIMIT = 1;
+    private static final boolean SLOW_ON_AUTONOMOUS = false;
     private TankDrive drive;
     private ContinuousRange driveSpeed;
     private ContinuousRange turnSpeed;
@@ -111,8 +112,11 @@ public class Robot extends IterativeRobot {
         //Start Strongback functions ...
         Strongback.start();
         
+        if(SLOW_ON_AUTONOMOUS) Strongback.submit(new TimedDriveCommand(drive, -0.35, 0.0, false, 5.0));
+        else{Strongback.submit(new TimedDriveCommand(drive, -0.5, 0.0, false, 4.5));}
+
         //Moves forward for 5 seconds
-        Strongback.submit(new TimedDriveCommand(drive, -0.5, 0.0, false, 5.0));
+        
     }
     
     @Override

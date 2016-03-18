@@ -113,7 +113,10 @@ public class Robot extends IterativeRobot {
         Strongback.start();
         
         if(SLOW_ON_AUTONOMOUS) Strongback.submit(new TimedDriveCommand(drive, -0.35, 0.0, false, 5.0));
-        else{Strongback.submit(new TimedDriveCommand(drive, -0.5, 0.0, false, 4.5));}
+        else{
+        	Strongback.submit(new TimedDriveCommand(drive, -0.5, 0.0, false, 3.0));
+        	Strongback.submit(new TimedDriveCommand(drive, 0.5, 0.0, false, 3.0));
+        }
 
         //Moves forward for 5 seconds
         
